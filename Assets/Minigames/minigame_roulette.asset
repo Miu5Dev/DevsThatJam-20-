@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MinigameData
   minigameName: Roulette
   sprite: {fileID: 3356307925731355486, guid: d04dbad652bd7f44ab25ed24d1a5e004, type: 3}
-  sceneName: minigame_roulette
+  sceneName: minigame_penalties
   multiplierRange: {x: 1, y: 5}

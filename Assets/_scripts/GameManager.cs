@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     {
         populateRoulette();
         currentRoulette.SpinWheel();
+        
+        currentRoulette.onSpinComplete.AddListener(OnResultadoRuleta);
     }
 
     // Sistema de apuestas

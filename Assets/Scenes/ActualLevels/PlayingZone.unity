@@ -275,14 +275,110 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 692717225625975426, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1317852125561705669, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1562695486346097803, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1562695486346097803, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1809076754818472622, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1809076754818472622, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2051994709831560881, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2051994709831560881, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2078009390340093463, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2078009390340093463, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 2513272048892175976, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
       propertyPath: m_Name
       value: Ruleta
       objectReference: {fileID: 0}
+    - target: {fileID: 3090584008526256280, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3090584008526256280, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3546304214472226527, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3546304214472226527, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3950004463033177745, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 4208001266058541236, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 4474481728951252872, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
       propertyPath: rb
       value: 
       objectReference: {fileID: 369072569}
+    - target: {fileID: 4540988741127408811, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 4587023859414897677, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6163360238595407216, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6829776651929921264, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 8572131407494766442, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 8572131407494766442, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 9058655091539903722, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 9058655091539903722, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents:
     - {fileID: 3539298066619591321, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
     - {fileID: 4032747841783935560, guid: 7e5c1d0933e3bbb4b9f933a18fb0c106, type: 3}
@@ -341,14 +437,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1883329567}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ebe9e373fb7425e8f8cb56033023c91, type: 3}
+  m_Script: {fileID: 11500000, guid: eff4a0cea10b6eb40b983673da526ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  monedas: 100
+  apuestaActual: 100
   coinsRequired: 0
   rounds: 0
   minigameMuliplier: 0
   currentRound: 0
-  currentCoins: 0
   minigamesData:
   - {fileID: 11400000, guid: c69cfceb30cf13e4fa443a2a524506d5, type: 2}
   currentRoulette: {fileID: 369072570}
