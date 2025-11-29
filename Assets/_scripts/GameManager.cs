@@ -1,13 +1,26 @@
-<<<<<<< Updated upstream
-using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public int monedas = 100;
-    public int apuestaActual = 100;
+    [Header("Player Economy")]
+    [SerializeField] private int monedas = 100;
+    [SerializeField] private int apuestaActual = 100;
+    
+    [Header("Minigame Settings")]
+    [SerializeField] private int coinsRequired;
+    [SerializeField] private int rounds;
+    [SerializeField] private int minigameMuliplier;
+    
+    [Header("Current Values")]
+    [SerializeField] private int currentRound;
+    
+    [Header("Posible Minigames")]
+    [SerializeField] private List<MinigameData> minigamesData = new List<MinigameData>();
+    [SerializeField] private RuletaPhysics currentRoulette;
 
     private void Awake()
     {
@@ -21,13 +34,31 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void Start()
+    {
+        populateRoulette();
+        currentRoulette.SpinWheel();
+    }
+
+    // Sistema de apuestas
     public bool EmpezarMinijuego(int apuesta)
     {
         if (monedas < apuesta)
             return false;
+        
         monedas -= apuesta;
         apuestaActual = apuesta;
         return true;
+    }
+
+    // Callback cuando termina el minijuego
+    public void onMinigameEnded(bool winned)
+    {
+        if (!winned)
+            PerdisteMinijuego();
+        else
+            GanasteMinijuego(minigameMuliplier);
     }
 
     public void GanasteMinijuego(int multiplicador)
@@ -43,54 +74,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("YOU LOSE " + apuestaActual + " coins. Total: " + monedas);
         apuestaActual = 0;
     }
-}
-    
-=======
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
-{
-    [Header("Requirements")]
-    [SerializeField] private int coinsRequired;
-    [SerializeField] private int rounds;
-    [SerializeField] private int minigameMuliplier;
-    
-    [Header("Current Values")]
-    [SerializeField] private int currentRound;
-    [SerializeField] private int currentCoins;
-    
-    [Header("Posible Minigames")]
-    [SerializeField] private List<MinigameData> minigamesData = new List<MinigameData>();
-
-    [SerializeField] private RuletaPhysics currentRoulette;
-
-    private void Start()
-    {
-        populateRoulette();
-        
-        currentRoulette.SpinWheel();
-    }
-
-    public void onMinigameEnded(bool winned)
-    {
-        if (!winned)
-            onLose();
-        else
-            onWin();
-    }
-
-    private void onWin()
-    {
-        currentCoins *= minigameMuliplier;
-    }
-
-    private void onLose()
-    {
-        currentCoins /= minigameMuliplier;
-    }
-
+    // Callback de la ruleta
     private void OnResultadoRuleta(int resultado)
     {
         RouletteOption selectedOption = currentRoulette.options[resultado];
@@ -98,6 +83,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(selectedOption.sceneName);
     }
 
+    // Población de opciones de ruleta
     private void populateRoulette()
     {
         if (minigamesData.Count == 0) return;
@@ -109,9 +95,7 @@ public class GameManager : MonoBehaviour
             int randomMultiplier = Random.Range(randomMinigame.multiplierRange.x, 
                 randomMinigame.multiplierRange.y + 1);
             
-            // Inicializar la opción
             option.Initialize(randomMinigame, randomMultiplier);
         }
     }
 }
->>>>>>> Stashed changes
