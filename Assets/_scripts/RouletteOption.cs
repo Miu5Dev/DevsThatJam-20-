@@ -3,23 +3,32 @@ using UnityEngine;
 
 public class RouletteOption : MonoBehaviour
 {
+    public SpriteRenderer opcionSprite;
+    public TextMeshPro multiplier;
+    public string sceneName;
+    public int multiplierValue;
 
-    [SerializeField] private SpriteRenderer opcionSprite;
-    [SerializeField] private TextMeshPro multiplier;
-
-    [SerializeField] private int multiplierValue;
-    
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        updateDisplay();
+    }
+
+    // Método para inicializar desde MinigameData
+    public void Initialize(MinigameData data, int multiplier)
+    {
+        opcionSprite.sprite = data.sprite;
+        sceneName = data.sceneName;
+        multiplierValue = multiplier;
+        updateDisplay();
+    }
+
+    public void updateDisplay()
     {
         multiplier.text = $"x{multiplierValue}";
     }
-
 
     public int getMultiplier()
     {
         return multiplierValue;
     }
-    
 }
