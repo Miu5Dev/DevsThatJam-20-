@@ -3,12 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Indicator
+  - CornerCollider
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - RouletteOption
   - Water
   - UI
   - UI2
