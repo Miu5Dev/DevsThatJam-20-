@@ -38,8 +38,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         populateRoulette();
-        currentRoulette.SpinWheel();
-        
         currentRoulette.onSpinComplete.AddListener(OnResultadoRuleta);
     }
 
@@ -99,5 +97,10 @@ public class GameManager : MonoBehaviour
             
             option.Initialize(randomMinigame, randomMultiplier);
         }
+    }
+
+    public void spinWheel()
+    {
+        currentRoulette.SpinWheel();
     }
 }
