@@ -148,14 +148,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff4a0cea10b6eb40b983673da526ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  monedas: 100
-  apuestaActual: 100
+  coins: 100
   coinsRequired: 0
   rounds: 0
   minigameMuliplier: 0
   currentRound: 0
   minigamesData: []
   currentRoulette: {fileID: 0}
+  _lobbyController: {fileID: 0}
 --- !u!4 &126339262
 Transform:
   m_ObjectHideFlags: 0
@@ -397,7 +397,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34
+  m_fontSize: 42.35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -882,7 +882,7 @@ MonoBehaviour:
   multiplierText: {fileID: 369767079}
   exitButtonObject: {fileID: 613011271}
   apuesta: 10
-  objetivoMultiplicador: 15
+  objetivoMultiplicador: 5
   leftButton: {fileID: 2067071300}
   centerButton: {fileID: 1993433371}
   rightButton: {fileID: 210040021}
@@ -1563,7 +1563,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5290985, y: 0.8170929}
+  m_AnchoredPosition: {x: 0.52911377, y: 0.8170929}
   m_SizeDelta: {x: -1.7108765, y: -2.2838135}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1907875664

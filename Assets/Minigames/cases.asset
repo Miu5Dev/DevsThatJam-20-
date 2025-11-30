@@ -15,4 +15,6 @@ MonoBehaviour:
   minigameName: Cases
   sprite: {fileID: 3356307925731355486, guid: d04dbad652bd7f44ab25ed24d1a5e004, type: 3}
   sceneName: minigame_case
-  multiplierRange: {x: 1, y: 5}
+  multiplierRange: {x: 2, y: 5}
+  spriteSize: {x: 0.5, y: 0.5}
+  maintainAspectRatio: 1
