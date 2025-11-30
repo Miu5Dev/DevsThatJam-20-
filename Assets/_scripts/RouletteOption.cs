@@ -16,6 +16,7 @@ public class RouletteOption : MonoBehaviour
     // Método para inicializar desde MinigameData
     public void Initialize(MinigameData data, int multiplier)
     {
+        opcionSprite = GetComponentInChildren<SpriteRenderer>(); // Re-fetch every time
         opcionSprite.sprite = data.sprite;
         sceneName = data.sceneName;
         multiplierValue = multiplier;

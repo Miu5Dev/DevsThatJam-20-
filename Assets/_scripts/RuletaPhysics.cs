@@ -56,6 +56,10 @@ public class RuletaPhysics : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        
+        if(GameManager.Instance != null)
+            GameManager.Instance.currentRoulette = this;
+        
         if (rb == null) rb = gameObject.AddComponent<Rigidbody2D>();
         
         rb.gravityScale = 0;

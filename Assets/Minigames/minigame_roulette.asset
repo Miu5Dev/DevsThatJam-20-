@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e818d51351b20247b75136a977e2397, type: 3}
   m_Name: minigame_roulette
   m_EditorClassIdentifier: Assembly-CSharp::MinigameData
-  minigameName: Roulette
-  sprite: {fileID: 3356307925731355486, guid: d04dbad652bd7f44ab25ed24d1a5e004, type: 3}
+  minigameName: Penalties
+  sprite: {fileID: -3603556060819865620, guid: dddebb71c2f1fca498da1d4d2f4efaff, type: 3}
   sceneName: minigame_penalties
   multiplierRange: {x: 1, y: 5}

@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,18 +29,6 @@ public class PenaltyRandomButtons : MonoBehaviour
         if (exitButtonObject != null)
             exitButtonObject.SetActive(false);
 
-        if (GameManager.Instance != null)
-        {
-            bool ok = GameManager.Instance.EmpezarMinijuego(apuesta);
-            if (!ok)
-            {
-                if (resultText != null)
-                    resultText.text = "You don't have coins.";
-                DesactivarBotones();
-                return;
-            }
-        }
-
         currentMultiplier = 1;
         UpdateMultiplierText();
         SetupNewRound();
@@ -70,18 +57,12 @@ public class PenaltyRandomButtons : MonoBehaviour
             // FALLO -> pierdes apuesta
             if (resultText != null)
                 resultText.text = "YOU FAIL";
-
-                
-
+            
             currentMultiplier = 1;
             UpdateMultiplierText();
 
             if (GameManager.Instance != null)
-                GameManager.Instance.PerdisteMinijuego();
-
-            juegoTerminado = true;
-            DesactivarBotones();
-            MostrarBotonSalir();
+                GameManager.Instance.endMinigame(false);
         }
         else
         {
@@ -92,18 +73,11 @@ public class PenaltyRandomButtons : MonoBehaviour
             currentMultiplier++;
             UpdateMultiplierText();
 
-            // ¿ha llegado al objetivo?
+            // ï¿½ha llegado al objetivo?
             if (currentMultiplier >= objetivoMultiplicador)
             {
                 if (GameManager.Instance != null)
-                    GameManager.Instance.GanasteMinijuego(currentMultiplier);
-
-                if (resultText != null)
-                    resultText.text = "¡YOU WON! x" + currentMultiplier;
-
-                juegoTerminado = true;
-                DesactivarBotones();
-                MostrarBotonSalir();
+                    GameManager.Instance.endMinigame(true);
             }
             else
             {
@@ -130,13 +104,5 @@ public class PenaltyRandomButtons : MonoBehaviour
     {
         if (exitButtonObject != null)
             exitButtonObject.SetActive(true);
-    }
-
-    public void OnExitButton()
-    {
-        // - Cargar otra escena
-        // - Volver al main game
-
-        Debug.Log("Salir del minijuego de penaltis.");
     }
 }

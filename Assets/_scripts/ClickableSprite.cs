@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,10 +6,13 @@ public class ClickableSprite : MonoBehaviour
 {
     [Header("Events")]
     public UnityEvent onClick;
+
     
     void OnMouseDown()
     {
-        Debug.Log($"Clicked on {gameObject.name}");
+        if(GameManager.Instance != null)
+            GameManager.Instance.spinWheel();
+        
         onClick?.Invoke();
     }
     
