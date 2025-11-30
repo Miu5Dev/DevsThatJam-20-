@@ -109,12 +109,22 @@ public class GameManager : MonoBehaviour
 
     public void onWin()
     {
-        coins *= minigameMuliplier;
+        if (minigameMuliplier == 1)
+        {
+            coins+=coins;
+        }
+        else
+            coins *= minigameMuliplier;
     }
 
     public void onLose()
     {
-        coins /= minigameMuliplier;
+        if (minigameMuliplier == 1)
+        {
+            coins-=coins;
+        }
+        else
+            coins /= minigameMuliplier;
     }
 
     // Callback de la ruleta

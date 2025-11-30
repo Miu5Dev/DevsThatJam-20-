@@ -55,6 +55,7 @@ public class BlackjackManager : MonoBehaviour
         if (playerScore > 21)
         {
             EndRound("You lose.");
+            GameManager.Instance.endMinigame(false);
         }
     }
 
@@ -88,12 +89,12 @@ public class BlackjackManager : MonoBehaviour
     void BuildAndShuffleDeck()
     {
         deck.Clear();
-        // Añadir 4 copias de cada carta (como 4 palos) o las que quieras
+        // Aï¿½adir 4 copias de cada carta (como 4 palos) o las que quieras
         for (int i = 0; i < cardValues.Length; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                deck.Add(i); // guardamos el índice de la carta
+                deck.Add(i); // guardamos el ï¿½ndice de la carta
             }
         }
 
@@ -169,7 +170,7 @@ public class BlackjackManager : MonoBehaviour
     {
         roundActive = false;
 
-        // Dealer roba hasta llegar a 17 o más
+        // Dealer roba hasta llegar a 17 o mï¿½s
         while (CalculateHandValue(dealerHand) < 17)
         {
             DealCardToDealer();
@@ -182,15 +183,18 @@ public class BlackjackManager : MonoBehaviour
 
         if (dealerScore > 21)
         {
-            EndRound("The dealer passed. ¡You won!");
+            EndRound("The dealer passed. ï¿½You won!");
+            GameManager.Instance.endMinigame(true);
         }
         else if (playerScore > dealerScore)
         {
-            EndRound("¡You won!");
+            EndRound("ï¿½You won!");
+            GameManager.Instance.endMinigame(true);
         }
         else if (playerScore < dealerScore)
         {
             EndRound("You lose.");
+            GameManager.Instance.endMinigame(false);
         }
         else
         {

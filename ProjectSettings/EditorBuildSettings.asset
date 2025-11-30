@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/minigame_penalties.unity
     guid: d966f5cdc68abbc45ad11fd07bbff5d4
+  - enabled: 1
+    path: Assets/Scenes/minigame_blackjack.unity
+    guid: 9762e8a93594ae846a13984f609bb487
+  - enabled: 1
+    path: Assets/Scenes/minigame_case.unity
+    guid: 63d36920418f87a429cdf4c1dd2bf815
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

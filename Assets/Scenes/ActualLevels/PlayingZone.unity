@@ -1733,6 +1733,8 @@ MonoBehaviour:
   currentRound: 0
   minigamesData:
   - {fileID: 11400000, guid: c69cfceb30cf13e4fa443a2a524506d5, type: 2}
+  - {fileID: 11400000, guid: 47467c9d9ccb0234599d138eb036f180, type: 2}
+  - {fileID: 11400000, guid: c8e58a2cb2218d14f9898dc7c6941c2f, type: 2}
   currentRoulette: {fileID: 369072570}
   _lobbyController: {fileID: 0}
 --- !u!4 &1883329569
