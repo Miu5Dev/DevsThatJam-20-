@@ -49,7 +49,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   opcionSprite: {fileID: 3472409669022764966}
   multiplier: {fileID: 6996580162092304279}
+  sceneName: 
   multiplierValue: 0
+  targetSpriteSize: {x: 0.25, y: 0.25}
+  maintainAspectRatio: 1
 --- !u!61 &1862628303462992236
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -158,7 +161,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2774225765663817046, guid: c261908fb4e34ea48a4d3a561ec8dfa7, type: 2}
+  - {fileID: 2687860625597132137, guid: c261908fb4e34ea48a4d3a561ec8dfa7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -204,14 +207,14 @@ MonoBehaviour:
   m_text: x2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c261908fb4e34ea48a4d3a561ec8dfa7, type: 2}
-  m_sharedMaterial: {fileID: 2774225765663817046, guid: c261908fb4e34ea48a4d3a561ec8dfa7, type: 2}
+  m_sharedMaterial: {fileID: 2687860625597132137, guid: c261908fb4e34ea48a4d3a561ec8dfa7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4289427011
+  m_fontColor: {r: 0.26223743, g: 0.46434015, b: 0.6698113, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

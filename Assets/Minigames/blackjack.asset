@@ -15,4 +15,6 @@ MonoBehaviour:
   minigameName: blackjack
   sprite: {fileID: -1125728426391652827, guid: 80719df3c1c86d645af724a84a434d08, type: 3}
   sceneName: minigame_blackjack
-  multiplierRange: {x: 1, y: 5}
+  multiplierRange: {x: 2, y: 5}
+  spriteSize: {x: 0.25, y: 0.25}
+  maintainAspectRatio: 1
