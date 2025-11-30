@@ -142,7 +142,7 @@ public class UIManager : MonoBehaviour
 
     public void OnQuitButton()
     {
-        ShowConfirmQuit();
+        OnQuitYes();
     }
 
     // BOTONES DE OPCIONES / CR�DITOS / QUIT

@@ -1512,7 +1512,7 @@ MonoBehaviour:
   coins: 100
   coinsRequired: 0
   rounds: 0
-  minigameMuliplier: 2
+  minigameMuliplier: 100
   currentRound: 0
   minigamesData: []
   currentRoulette: {fileID: 0}

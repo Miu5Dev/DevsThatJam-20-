@@ -32,6 +32,7 @@ public class CaseOpenerManager : MonoBehaviour
     private RarityColor targetColor;
     private int casesOpened = 0;
     private bool isRunning = false;
+    private List<CaseBox> usedBoxes = new List<CaseBox>();
 
     private void Start()
     {
@@ -51,6 +52,7 @@ public class CaseOpenerManager : MonoBehaviour
     {
         casesOpened = 0;
         isRunning = false;
+        usedBoxes.Clear(); // Reset de cajas usadas
 
         // Activamos vista de cajas, ocultamos ruleta
         mainView.SetActive(true);
@@ -78,7 +80,7 @@ public class CaseOpenerManager : MonoBehaviour
         targetColor = CalculateTargetFromMultiplier(multiplier);
         targetColorIndicator.color = GetColorFromRarity(targetColor);
         
-        Debug.Log($"lor=cyan>NUEVA RONDA - Target: {targetColor} (Multiplicador: {multiplier}x)</color>");
+        Debug.Log($"<color=cyan>NUEVA RONDA - Target: {targetColor} (Multiplicador: {multiplier}x)</color>");
     }
 
     private RarityColor CalculateTargetFromMultiplier(float mult)
@@ -92,17 +94,22 @@ public class CaseOpenerManager : MonoBehaviour
 
     private void HandleCaseClick(CaseBox box)
     {
-        if (isRunning) return; // Evita doble disparo mientras anima
+        if (isRunning) return;
 
         isRunning = true;
+        usedBoxes.Add(box); // Marca como usada
+        
+        // ✅ BLOQUEA TODAS LAS CAJAS INMEDIATAMENTE
+        foreach (var caseBox in caseBoxes)
+        {
+            caseBox.EnableClick(false);
+        }
+        
         StartCoroutine(OpenCaseSequence(box));
     }
 
     private IEnumerator OpenCaseSequence(CaseBox box)
     {
-        // Deshabilito solo esta caja (ya usada)
-        box.EnableClick(false);
-        
         SFX.clip = openbox;
         SFX.loop = false;
         SFX.Play();
@@ -119,7 +126,7 @@ public class CaseOpenerManager : MonoBehaviour
 
         // Generar resultado
         WeaponSkin result = GenerateResult();
-        Debug.Log($"lor=magenta>MANAGER - Skin generado: {result.skinName} ({result.rarity}) vs Target: {targetColor}</color>");
+        Debug.Log($"<color=magenta>MANAGER - Skin generado: {result.skinName} ({result.rarity}) vs Target: {targetColor}</color>");
 
         
         SFX.clip = roulette;
@@ -130,7 +137,7 @@ public class CaseOpenerManager : MonoBehaviour
 
         // ✅ OBTIENE EL RESULTADO REAL DETECTADO
         WeaponSkin finalResult = rouletteScroller.GetFinalResult();
-        Debug.Log($"lor=yellow>Resultado final detectado: {finalResult.skinName} ({finalResult.rarity})</color>");
+        Debug.Log($"<color=yellow>Resultado final detectado: {finalResult.skinName} ({finalResult.rarity})</color>");
         SFX.clip = roulette;
         SFX.loop = false;
         SFX.Stop();
@@ -146,7 +153,7 @@ public class CaseOpenerManager : MonoBehaviour
         
         if (success)
         {
-            Debug.Log($"lor=green>✓ GANASTE con {finalResult.skinName}</color>");
+            Debug.Log($"<color=green>✓ GANASTE con {finalResult.skinName}</color>");
             // Ganó: termina el minijuego
             EndMinigame(true, finalResult);
             yield break;
@@ -154,19 +161,28 @@ public class CaseOpenerManager : MonoBehaviour
 
         if (casesOpened >= maxCases)
         {
-            Debug.Log($"lor=red>✗ PERDISTE - {casesOpened}/{maxCases} cajas usadas</color>");
+            Debug.Log($"<color=red>✗ PERDISTE - {casesOpened}/{maxCases} cajas usadas</color>");
             // Se acabaron las cajas, perdió
             EndMinigame(false, finalResult);
             yield break;
         }
 
-        Debug.Log($"lor=yellow>Caja {casesOpened}/{maxCases} - Continúa jugando</color>");
+        Debug.Log($"<color=yellow>Caja {casesOpened}/{maxCases} - Continúa jugando</color>");
 
         // Si aún hay cajas y no acertó, volvemos a la vista de cajas
         yield return FadeToBlack(0.3f);
         rouletteView.SetActive(false);
         mainView.SetActive(true);
         yield return FadeFromBlack(0.3f);
+
+        // ✅ Solo habilita las cajas que NO se han usado
+        foreach (var caseBox in caseBoxes)
+        {
+            if (!usedBoxes.Contains(caseBox))
+            {
+                caseBox.EnableClick(true);
+            }
+        }
 
         isRunning = false;
     }
@@ -233,8 +249,8 @@ public class CaseOpenerManager : MonoBehaviour
     private void EndMinigame(bool success, WeaponSkin finalResult)
     {
         Debug.Log(success
-            ? $"lor=lime>GANASTE: {finalResult?.skinName} ({finalResult?.rarity})</color>"
-            : $"lor=red>PERDISTE: no conseguiste el color requerido ({targetColor})</color>");
+            ? $"<color=lime>GANASTE: {finalResult?.skinName} ({finalResult?.rarity})</color>"
+            : $"<color=red>PERDISTE: no conseguiste el color requerido ({targetColor})</color>");
 
         GameManager.Instance.endMinigame(success);        
     }
