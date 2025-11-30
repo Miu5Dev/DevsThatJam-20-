@@ -126,10 +126,9 @@ public class LobbyController : MonoBehaviour
         
         int currentMoney = GameManager.Instance.getCoins();
         
-        if (currentMoney != cachedMoney)
+        if (currentMoney.ToString() != money.text)
         {
             money.text = currentMoney.ToString();
-            cachedMoney = currentMoney;
         }
     }
 

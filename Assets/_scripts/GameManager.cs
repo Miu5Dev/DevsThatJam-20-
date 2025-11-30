@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Minigame Settings")]
     [SerializeField] private int coinsRequired;
     [SerializeField] private int rounds;
-    [SerializeField] private int minigameMuliplier;
+    [SerializeField] public int minigameMuliplier;
     
     [Header("Current Values")]
     [SerializeField] private int currentRound;
@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour
     // Callback de la ruleta
     private void OnResultadoRuleta(int resultado)
     {
+        Debug.Log(resultado-1);
         RouletteOption selectedOption = currentRoulette.options[resultado-1];
         minigameMuliplier = selectedOption.multiplierValue;
         SceneManager.LoadScene(selectedOption.sceneName);
