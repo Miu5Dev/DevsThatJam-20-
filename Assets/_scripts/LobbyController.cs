@@ -16,6 +16,9 @@ public class LobbyController : MonoBehaviour
     private int cachedMoney = -1;
     [SerializeField] private Canvas mainCanvas;
     private RectTransform titleHolderRect;
+    
+    // Referencia a la coroutine activa para evitar conflictos
+    private Coroutine activeAnimationCoroutine;
 
     private void Start()
     {
@@ -72,7 +75,7 @@ public class LobbyController : MonoBehaviour
                     Debug.LogError("LobbyController: No se encontró TitlePanel en el Canvas!");
                 }
                 
-                // Buscar el objeto Money en el Canvas - CORREGIDO
+                // Buscar el objeto Money en el Canvas
                 GameObject moneyObject = FindChildByName(canvasTransform, "Money");
                 if (moneyObject != null)
                 {
@@ -137,10 +140,17 @@ public class LobbyController : MonoBehaviour
         // Validar referencias antes de usar
         ValidateReferences();
         
-        if (titleHolder == null || titleTitle == null || titleSubtitle == null || titleHolderRect == null)
+        if (titleHolder == null || titleTitle == null || titleSubtitle == null)
         {
             Debug.LogError("LobbyController: Referencias de título no disponibles!");
             return;
+        }
+        
+        // Detener la animación anterior si existe
+        if (activeAnimationCoroutine != null)
+        {
+            StopCoroutine(activeAnimationCoroutine);
+            activeAnimationCoroutine = null;
         }
         
         if (winned)
@@ -155,66 +165,34 @@ public class LobbyController : MonoBehaviour
         }
         
         titleHolder.SetActive(true);
-        StartCoroutine(SlideInOutWithFade(titleTitle, titleSubtitle));
+        
+        // Guardar la referencia a la nueva coroutine
+        activeAnimationCoroutine = StartCoroutine(FadeInOutText(titleTitle, titleSubtitle));
     }
 
-    private IEnumerator SlideInOutWithFade(TMP_Text title, TMP_Text subtitle)
+    private IEnumerator FadeInOutText(TMP_Text title, TMP_Text subtitle)
     {
-        const float slideInDuration = 0.5f;
         const float fadeInDuration = 0.5f;
         const float displayDuration = 2f;
         const float fadeOutDuration = 0.5f;
-        const float slideOutDuration = 0.5f;
         
-        // Obtener el ancho del canvas para calcular las posiciones
-        float canvasWidth = mainCanvas.GetComponent<RectTransform>().rect.width;
-        
-        // Posiciones: izquierda (fuera), centro, derecha (fuera)
-        Vector2 leftPosition = new Vector2(-canvasWidth, titleHolderRect.anchoredPosition.y);
-        Vector2 centerPosition = new Vector2(0f, titleHolderRect.anchoredPosition.y);
-        Vector2 rightPosition = new Vector2(canvasWidth, titleHolderRect.anchoredPosition.y);
-        
-        // Inicializar: panel a la izquierda, texto transparente
-        titleHolderRect.anchoredPosition = leftPosition;
+        // Inicializar: texto transparente
         SetTextAlpha(title, 0f);
         SetTextAlpha(subtitle, 0f);
         
-        // PASO 1: DESLIZAR DE IZQUIERDA AL CENTRO
-        yield return SlidePanel(leftPosition, centerPosition, slideInDuration);
-        
-        // PASO 2: FADE IN DEL TEXTO
+        // PASO 1: FADE IN
         yield return FadeText(title, subtitle, 0f, 1f, fadeInDuration);
         
-        // PASO 3: MANTENER VISIBLE
+        // PASO 2: MANTENER VISIBLE
         yield return new WaitForSeconds(displayDuration);
         
-        // PASO 4: FADE OUT DEL TEXTO
+        // PASO 3: FADE OUT
         yield return FadeText(title, subtitle, 1f, 0f, fadeOutDuration);
         
-        // PASO 5: DESLIZAR DEL CENTRO A LA DERECHA
-        yield return SlidePanel(centerPosition, rightPosition, slideOutDuration);
-        
         titleHolder.SetActive(false);
-    }
-
-    private IEnumerator SlidePanel(Vector2 startPos, Vector2 endPos, float duration)
-    {
-        float elapsed = 0f;
         
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            
-            // Ease out cubic para movimiento más suave
-            float smoothT = 1f - Mathf.Pow(1f - t, 3f);
-            
-            titleHolderRect.anchoredPosition = Vector2.Lerp(startPos, endPos, smoothT);
-            
-            yield return null;
-        }
-        
-        titleHolderRect.anchoredPosition = endPos;
+        // Limpiar la referencia cuando termina
+        activeAnimationCoroutine = null;
     }
 
     private IEnumerator FadeText(TMP_Text title, TMP_Text subtitle, float startAlpha, float endAlpha, float duration)

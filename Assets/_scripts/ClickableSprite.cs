@@ -7,6 +7,7 @@ public class ClickableSprite : MonoBehaviour
     [Header("Events")]
     public UnityEvent onClick;
 
+    private Vector3 savedScale;
     
     void OnMouseDown()
     {
@@ -19,12 +20,14 @@ public class ClickableSprite : MonoBehaviour
     // Opcional: para feedback visual
     void OnMouseEnter()
     {
+        savedScale = transform.localScale;
+        
         // Cambiar color o escala
-        transform.localScale = Vector3.one * 1.1f;
+        transform.localScale = savedScale * 1.1f;
     }
     
     void OnMouseExit()
     {
-        transform.localScale = Vector3.one;
+        transform.localScale = savedScale;
     }
 }

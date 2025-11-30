@@ -35,11 +35,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private string gameplaySceneName = "GameScene";
     private void Awake()
     {
-        audioSource = GameManager.Instance.bgsource;
-
-        audioSource.loop = true;
-        audioSource.playOnAwake = true;
-        audioSource.spatialBlend = 0f;
 
         if (playButton != null) playButton.onClick.AddListener(OnPlayButton);
         if (optionsButton != null) optionsButton.onClick.AddListener(OnOptionsButton);
@@ -54,6 +49,14 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        
+        audioSource = GameManager.Instance.bgsource;
+
+        audioSource.loop = true;
+        audioSource.playOnAwake = true;
+        audioSource.spatialBlend = 0f;
+        
+        
         if (menuMusic != null && audioSource != null)
         {
             audioSource.clip = menuMusic;
