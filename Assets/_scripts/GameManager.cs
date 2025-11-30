@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("Settings")]
+    [SerializeField] public AudioClip RoulleteBGMusic;
+
+    
     [Header("Player Economy")]
     [SerializeField] private int coins = 100;
 
@@ -17,9 +21,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int coinsRequired;
     [SerializeField] private int rounds;
     [SerializeField] public int minigameMuliplier;
-    
+
     [Header("Current Values")]
     [SerializeField] private int currentRound;
+    
     
     [Header("Posible Minigames")]
     [SerializeField] private List<MinigameData> minigamesData = new List<MinigameData>();
@@ -27,6 +32,8 @@ public class GameManager : MonoBehaviour
     
     [Header("Controllers")]
     [SerializeField] public LobbyController _lobbyController;
+    [SerializeField] public AudioSource bgsource;
+
     
     private void Awake()
     {
@@ -35,6 +42,11 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded; // Registrar evento
+                    
+        
+            bgsource.loop = true;
+            bgsource.playOnAwake = true;
+            bgsource.spatialBlend = 0f;
         }
         else
         {
@@ -54,9 +66,12 @@ public class GameManager : MonoBehaviour
         // Re-encontrar referencias de la nueva escena
         RefreshSceneReferences();
         
+        
+        
         // Solo poblar si estamos en PlayingZone
         if (scene.name == "PlayingZone")
         {
+            bgsource.clip = RoulleteBGMusic;
             populateRoulette();
             
             // Re-suscribir al evento de la nueva ruleta
@@ -66,6 +81,8 @@ public class GameManager : MonoBehaviour
                 currentRoulette.onSpinComplete.AddListener(OnResultadoRuleta);
             }
         }
+        
+        bgsource.Play();
     }
 
     // Método para re-encontrar todas las referencias de escena
@@ -134,6 +151,7 @@ public class GameManager : MonoBehaviour
         RouletteOption selectedOption = currentRoulette.options[resultado-1];
         minigameMuliplier = selectedOption.multiplierValue;
         SceneManager.LoadScene(selectedOption.sceneName);
+        bgsource.clip = selectedOption.backgroundMusic;
     }
 
     // Población de opciones de ruleta
