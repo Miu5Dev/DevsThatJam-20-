@@ -152,7 +152,7 @@ public class RuletaPhysics : MonoBehaviour
         float normalizedTargetAngle = targetSnapAngle % 360f;
         if (normalizedTargetAngle < 0) normalizedTargetAngle += 360f;
         
-        selectedOption = (Mathf.RoundToInt(normalizedTargetAngle / anglePerOption) % numberOfOptions);
+        selectedOption = (Mathf.RoundToInt(normalizedTargetAngle / anglePerOption) % numberOfOptions) + 1;
         if (selectedOption <= 0) selectedOption += numberOfOptions;
         
         float startAngle = rb.rotation;
