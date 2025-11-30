@@ -71,6 +71,8 @@ public class CaseOpenerManager : MonoBehaviour
 
         targetColor = CalculateTargetFromMultiplier(multiplier);
         targetColorIndicator.color = GetColorFromRarity(targetColor);
+        
+        Debug.Log($"lor=cyan>NUEVA RONDA - Target: {targetColor} (Multiplicador: {multiplier}x)</color>");
     }
 
     private RarityColor CalculateTargetFromMultiplier(float mult)
@@ -107,30 +109,39 @@ public class CaseOpenerManager : MonoBehaviour
 
         // Generar resultado
         WeaponSkin result = GenerateResult();
+        Debug.Log($"lor=magenta>MANAGER - Skin generado: {result.skinName} ({result.rarity}) vs Target: {targetColor}</color>");
 
         // Correr ruleta (IEnumerator)
         yield return rouletteScroller.StartRoulette(availableSkins, result);
+
+        // ✅ OBTIENE EL RESULTADO REAL DETECTADO
+        WeaponSkin finalResult = rouletteScroller.GetFinalResult();
+        Debug.Log($"lor=yellow>Resultado final detectado: {finalResult.skinName} ({finalResult.rarity})</color>");
 
         // Espera un poco para que el jugador vea el resultado
         yield return new WaitForSeconds(1.5f);
 
         casesOpened++;
 
-        bool success = (int)result.rarity >= (int)targetColor;
+        bool success = (int)finalResult.rarity >= (int)targetColor;
 
         if (success)
         {
+            Debug.Log($"lor=green>✓ GANASTE con {finalResult.skinName}</color>");
             // Ganó: termina el minijuego
-            EndMinigame(true, result);
+            EndMinigame(true, finalResult);
             yield break;
         }
 
         if (casesOpened >= maxCases)
         {
+            Debug.Log($"lor=red>✗ PERDISTE - {casesOpened}/{maxCases} cajas usadas</color>");
             // Se acabaron las cajas, perdió
-            EndMinigame(false, result);
+            EndMinigame(false, finalResult);
             yield break;
         }
+
+        Debug.Log($"lor=yellow>Caja {casesOpened}/{maxCases} - Continúa jugando</color>");
 
         // Si aún hay cajas y no acertó, volvemos a la vista de cajas
         yield return FadeToBlack(0.3f);
@@ -203,10 +214,9 @@ public class CaseOpenerManager : MonoBehaviour
     private void EndMinigame(bool success, WeaponSkin finalResult)
     {
         Debug.Log(success
-            ? $"GANASTE: {finalResult?.skinName} ({finalResult?.rarity})"
-            : "PERDISTE: no conseguiste el color requerido.");
+            ? $"lor=lime>GANASTE: {finalResult?.skinName} ({finalResult?.rarity})</color>"
+            : $"lor=red>PERDISTE: no conseguiste el color requerido ({targetColor})</color>");
 
         GameManager.Instance.endMinigame(success);        
-        
     }
 }

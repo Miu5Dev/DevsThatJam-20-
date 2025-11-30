@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7a7335cda37e1947abfe5449aecc8fe, type: 3}
-  m_Name: Safari
+  m_Name: blue 1
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
-  skinName: AK-47 Safari
-  skinSprite: {fileID: -1988884944558754622, guid: cf7ba890159bd55469f78a1655d09cef, type: 3}
-  rarity: 0
-  dropChance: 90
+  skinName: AK-47
+  skinSprite: {fileID: -5385536641072663933, guid: 1dc4398f1061fb246b2de229a72d2cd9, type: 3}
+  rarity: 1
+  dropChance: 70

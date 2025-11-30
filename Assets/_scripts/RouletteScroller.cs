@@ -1,38 +1,99 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
 public class RouletteScroller : MonoBehaviour
 {
-    [SerializeField] private RectTransform contentContainer; // El objeto con HorizontalLayoutGroup
-    [SerializeField] private GameObject itemSlotPrefab; // Prefab simple: Image con tamaño fijo
-    [SerializeField] private AnimationCurve decelerationCurve; // Crea curva en Inspector
-    [SerializeField] private float itemWidth = 150f; // Ancho de cada item
+    [SerializeField] private RectTransform contentContainer;
+    [SerializeField] private RectTransform viewportRect;
+    [SerializeField] private RectTransform centerIndicator; // ✅ NECESARIO AHORA
+    [SerializeField] private GameObject itemSlotPrefab;
+    [SerializeField] private AnimationCurve decelerationCurve;
+    [SerializeField] private float itemWidth = 150f;
     
     private WeaponSkin guaranteedResult;
+    private HorizontalLayoutGroup layoutGroup;
+    private List<GameObject> generatedSlots = new List<GameObject>(); // ✅ Guarda los GameObjects
+    private List<WeaponSkin> generatedSkins = new List<WeaponSkin>();
+    private GraphicRaycaster raycaster; // ✅ Para detectar UI
+    private EventSystem eventSystem;
+
+    void Awake()
+    {
+        layoutGroup = contentContainer.GetComponent<HorizontalLayoutGroup>();
+        
+        // ✅ Obtiene el raycaster del Canvas
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+        {
+            raycaster = canvas.GetComponent<GraphicRaycaster>();
+            if (raycaster == null)
+            {
+                raycaster = canvas.gameObject.AddComponent<GraphicRaycaster>();
+            }
+        }
+        
+        eventSystem = EventSystem.current;
+        if (eventSystem == null)
+        {
+            GameObject eventSystemObj = new GameObject("EventSystem");
+            eventSystem = eventSystemObj.AddComponent<EventSystem>();
+            eventSystemObj.AddComponent<StandaloneInputModule>();
+        }
+    }
 
     public IEnumerator StartRoulette(List<WeaponSkin> pool, WeaponSkin result)
     {
-        ClearItems();
+        if (layoutGroup != null)
+            layoutGroup.enabled = true;
+
+        yield return ClearItems();
+
         guaranteedResult = result;
+        generatedSkins.Clear();
+        generatedSlots.Clear();
+
+        Debug.Log($"lor=cyan>RULETA INICIADA - Resultado garantizado: {result.skinName} ({result.rarity})</color>");
 
         GenerateItems(pool, 60, 52);
 
-        // IMPORTANTE: resetear posición antes de animar
+        yield return null;
+
         contentContainer.anchoredPosition = Vector2.zero;
 
         float targetPosition = CalculateTargetPosition(52);
 
         yield return ScrollToPosition(targetPosition, 4f);
+
+        // ✅ Espera un frame para asegurar que todo se renderizó
+        yield return null;
+
+        // ✅ RAYCAST PARA DETECTAR QUÉ ITEM ESTÁ BAJO EL INDICADOR
+        WeaponSkin detectedSkin = RaycastDetectItem();
+        
+        if (detectedSkin != null)
+        {
+            Debug.Log($"lor=lime>✓ RAYCAST DETECTÓ: {detectedSkin.skinName} ({detectedSkin.rarity})</color>");
+            guaranteedResult = detectedSkin;
+        }
+        else
+        {
+            Debug.LogWarning("Raycast no detectó nada, usando resultado calculado");
+        }
     }
 
-    void ClearItems()
+    IEnumerator ClearItems()
     {
         foreach (Transform child in contentContainer)
         {
-            Destroy(child.gameObject);
+            DestroyImmediate(child.gameObject);
         }
+        
+        generatedSlots.Clear();
+        contentContainer.anchoredPosition = Vector2.zero;
+        yield return null;
     }
 
     void GenerateItems(List<WeaponSkin> pool, int count, int winnerIndex)
@@ -40,21 +101,108 @@ public class RouletteScroller : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             WeaponSkin skin = (i == winnerIndex) ? guaranteedResult : GetRandomWeighted(pool);
+            generatedSkins.Add(skin);
+
+            if (i == winnerIndex)
+            {
+                Debug.Log($"lor=green>Índice {i}: GANADOR {guaranteedResult.skinName} ({guaranteedResult.rarity})</color>");
+            }
 
             GameObject slot = Instantiate(itemSlotPrefab, contentContainer);
+            slot.name = $"Item_{i}_{skin.skinName}";
+            generatedSlots.Add(slot);
 
-            // Fondo según rareza
+            // ✅ Asegura que el slot tenga un Image para raycast
+            Image slotImage = slot.GetComponent<Image>();
+            if (slotImage == null)
+            {
+                slotImage = slot.AddComponent<Image>();
+                slotImage.color = new Color(1, 1, 1, 0.01f); // Casi invisible pero raycasteable
+            }
+            slotImage.raycastTarget = true; // ✅ IMPORTANTE
+
+            // ✅ Guarda referencia al skin en el slot
+            RouletteSlotData slotData = slot.GetComponent<RouletteSlotData>();
+            if (slotData == null)
+            {
+                slotData = slot.AddComponent<RouletteSlotData>();
+            }
+            slotData.skin = skin;
+
             Image bgImage = slot.transform.Find("Background")?.GetComponent<Image>();
             if (bgImage != null)
                 bgImage.color = GetColorFromRarity(skin.rarity);
 
-            // Sprite del arma
             Image weaponImg = slot.transform.Find("WeaponSprite")?.GetComponent<Image>();
             if (weaponImg != null)
                 weaponImg.sprite = skin.skinSprite;
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(contentContainer);
+        
+        if (layoutGroup != null)
+            layoutGroup.enabled = false;
     }
 
+    // ✅ RAYCAST DESDE EL CENTER INDICATOR
+    WeaponSkin RaycastDetectItem()
+    {
+        if (centerIndicator == null)
+        {
+            Debug.LogError("centerIndicator no está asignado!");
+            return guaranteedResult;
+        }
+
+        if (raycaster == null)
+        {
+            Debug.LogError("GraphicRaycaster no encontrado!");
+            return guaranteedResult;
+        }
+
+        // Posición del centro del indicador en pantalla
+        Vector3 indicatorWorldPos = centerIndicator.position;
+        
+        // Crea datos de raycast
+        PointerEventData pointerData = new PointerEventData(eventSystem);
+        pointerData.position = RectTransformUtility.WorldToScreenPoint(
+            GetComponentInParent<Canvas>().worldCamera, 
+            indicatorWorldPos
+        );
+
+        // Si el canvas es Overlay, usa directamente la posición
+        if (GetComponentInParent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay)
+        {
+            pointerData.position = indicatorWorldPos;
+        }
+
+        // Ejecuta el raycast
+        List<RaycastResult> results = new List<RaycastResult>();
+        raycaster.Raycast(pointerData, results);
+
+        Debug.Log($"lor=orange>Raycast desde {pointerData.position} encontró {results.Count} objetos</color>");
+
+        // Busca el primer slot de ruleta
+        foreach (RaycastResult result in results)
+        {
+            RouletteSlotData slotData = result.gameObject.GetComponent<RouletteSlotData>();
+            if (slotData != null)
+            {
+                Debug.Log($"lor=lime>Hit en: {result.gameObject.name}</color>");
+                return slotData.skin;
+            }
+            
+            // Busca en el padre si el hit fue en un hijo (Background/WeaponSprite)
+            slotData = result.gameObject.GetComponentInParent<RouletteSlotData>();
+            if (slotData != null)
+            {
+                Debug.Log($"lor=lime>Hit en hijo de: {slotData.gameObject.name}</color>");
+                return slotData.skin;
+            }
+        }
+
+        Debug.LogWarning("Raycast no encontró ningún RouletteSlotData");
+        return guaranteedResult;
+    }
 
     IEnumerator ScrollToPosition(float targetPos, float duration)
     {
@@ -74,13 +222,27 @@ public class RouletteScroller : MonoBehaviour
         }
         
         contentContainer.anchoredPosition = new Vector2(targetPos, contentContainer.anchoredPosition.y);
+        
+        Debug.Log($"lor=yellow>Posición final de ruleta: {targetPos}</color>");
     }
 
     float CalculateTargetPosition(int itemIndex)
     {
-        // Calcula para centrar el item en la pantalla
-        float screenCenter = Screen.width / 2f;
-        return -(itemIndex * itemWidth) + screenCenter - (itemWidth / 2f);
+        if (viewportRect == null)
+        {
+            viewportRect = contentContainer.parent.GetComponent<RectTransform>();
+        }
+
+        float viewportCenter = viewportRect.rect.width / 2f;
+        float itemCenter = (itemIndex * itemWidth) + (itemWidth / 2f);
+        float targetPos = -itemCenter + viewportCenter;
+        
+        return targetPos;
+    }
+
+    public WeaponSkin GetFinalResult()
+    {
+        return guaranteedResult;
     }
 
     WeaponSkin GetRandomWeighted(List<WeaponSkin> pool)
