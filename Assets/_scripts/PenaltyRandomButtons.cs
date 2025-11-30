@@ -23,6 +23,7 @@ public class PenaltyRandomButtons : MonoBehaviour
     public AudioSource buttonAudioSource;
     public AudioClip clickSound;
     public AudioClip failSound;
+    public AudioClip winSound;
 
     private int badIndex;
     private int currentMultiplier = 1;
@@ -115,7 +116,13 @@ public class PenaltyRandomButtons : MonoBehaviour
                 if (!juegoTerminado)
                 {
                     juegoTerminado = true;
-                    StartCoroutine(WaitAndWin(3f));  // ESPERA 3s Y LUEGO GANA
+
+                    if (buttonAudioSource != null && winSound != null)
+                    {
+                        buttonAudioSource.PlayOneShot(winSound);
+                    }
+
+                    StartCoroutine(WaitAndWin(5f));  // ESPERA 3s Y LUEGO GANA
                 }
             }
             else
