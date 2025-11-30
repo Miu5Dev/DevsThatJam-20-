@@ -41,6 +41,9 @@ public class PenaltyRandomButtons : MonoBehaviour
         SetupNewRound();
         canShoot = true;
 
+        objetivoMultiplicador = GameManager.Instance.minigameMuliplier;
+        
+
         // CONECTAR SONIDO A LOS BOTONES
         if (leftButton != null)
             leftButton.onClick.AddListener(() => { Debug.Log("LEFT CLICK"); PlayClickSound(); });
