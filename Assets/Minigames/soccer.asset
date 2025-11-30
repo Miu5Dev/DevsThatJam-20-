@@ -15,6 +15,7 @@ MonoBehaviour:
   minigameName: Penalties
   sprite: {fileID: -3603556060819865620, guid: dddebb71c2f1fca498da1d4d2f4efaff, type: 3}
   sceneName: minigame_penalties
+  backgroundMusic: {fileID: 8300000, guid: 589794d7b6b1afe46b6388c7d668f7bd, type: 3}
   multiplierRange: {x: 2, y: 5}
   spriteSize: {x: 0.5, y: 0.5}
   maintainAspectRatio: 1
