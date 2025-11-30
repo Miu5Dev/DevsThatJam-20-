@@ -11,6 +11,12 @@ public class CaseOpenerManager : MonoBehaviour
     [SerializeField] private CanvasGroup fadePanel;        // Panel negro (CanvasGroup)
     [SerializeField] private Image targetColorIndicator;   // Imagen arriba derecha
 
+    [Header("SFX")]
+    [SerializeField] private AudioSource SFX;
+    [SerializeField] private AudioClip openbox;
+    [SerializeField] private AudioClip roulette;
+    
+    
     [Header("Cajas")]
     [SerializeField] private CaseBox[] caseBoxes;          // 3 cajas en escena
 
@@ -96,6 +102,10 @@ public class CaseOpenerManager : MonoBehaviour
     {
         // Deshabilito solo esta caja (ya usada)
         box.EnableClick(false);
+        
+        SFX.clip = openbox;
+        SFX.loop = false;
+        SFX.Play();
 
         // Fade a negro
         yield return FadeToBlack(0.3f);
@@ -111,20 +121,29 @@ public class CaseOpenerManager : MonoBehaviour
         WeaponSkin result = GenerateResult();
         Debug.Log($"lor=magenta>MANAGER - Skin generado: {result.skinName} ({result.rarity}) vs Target: {targetColor}</color>");
 
+        
+        SFX.clip = roulette;
+        SFX.loop = true;
+        SFX.Play();
         // Correr ruleta (IEnumerator)
         yield return rouletteScroller.StartRoulette(availableSkins, result);
 
         // ✅ OBTIENE EL RESULTADO REAL DETECTADO
         WeaponSkin finalResult = rouletteScroller.GetFinalResult();
         Debug.Log($"lor=yellow>Resultado final detectado: {finalResult.skinName} ({finalResult.rarity})</color>");
-
+        SFX.clip = roulette;
+        SFX.loop = false;
+        SFX.Stop();
+        
         // Espera un poco para que el jugador vea el resultado
         yield return new WaitForSeconds(1.5f);
 
         casesOpened++;
 
         bool success = (int)finalResult.rarity >= (int)targetColor;
-
+  
+        
+        
         if (success)
         {
             Debug.Log($"lor=green>✓ GANASTE con {finalResult.skinName}</color>");
