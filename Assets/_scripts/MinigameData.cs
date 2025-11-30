@@ -6,6 +6,8 @@ public class MinigameData : ScriptableObject
     public string minigameName;
     public Sprite sprite;
     public string sceneName;
+
+    public AudioClip backgroundMusic;
     
     [Tooltip("Rango de multiplicadores posibles para este minijuego")]
     public Vector2Int multiplierRange = new Vector2Int(1, 5);

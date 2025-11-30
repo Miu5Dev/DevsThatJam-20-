@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Musica")]
     [SerializeField] private AudioClip menuMusic;
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
 
 
     [Header("Main Buttons")]
@@ -33,16 +33,10 @@ public class UIManager : MonoBehaviour
 
     [Header("Datos de juego")]
     [SerializeField] private string gameplaySceneName = "GameScene";
-
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource = GameManager.Instance.bgsource;
 
-            
-        }
         audioSource.loop = true;
         audioSource.playOnAwake = true;
         audioSource.spatialBlend = 0f;
@@ -148,7 +142,7 @@ public class UIManager : MonoBehaviour
         ShowConfirmQuit();
     }
 
-    // BOTONES DE OPCIONES / CRÉDITOS / QUIT
+    // BOTONES DE OPCIONES / CRï¿½DITOS / QUIT
 
     public void OnBackFromOptions()
     {

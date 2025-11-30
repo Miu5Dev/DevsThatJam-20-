@@ -8,6 +8,8 @@ public class RouletteOption : MonoBehaviour
     public string sceneName;
     public int multiplierValue;
     
+    public AudioClip backgroundMusic;
+    
     [Header("Sprite Size (Fallback)")]
     [SerializeField] private Vector2 defaultSpriteSize = new Vector2(2f, 2f); // ✅ Valor por defecto
     [SerializeField] private bool defaultMaintainAspectRatio = true;
@@ -24,6 +26,7 @@ public class RouletteOption : MonoBehaviour
         opcionSprite.sprite = data.sprite;
         sceneName = data.sceneName;
         multiplierValue = multiplier;
+        backgroundMusic = data.backgroundMusic;
         
         // ✅ Usa el tamaño del ScriptableObject
         AdjustSpriteSize(data.spriteSize, data.maintainAspectRatio);
