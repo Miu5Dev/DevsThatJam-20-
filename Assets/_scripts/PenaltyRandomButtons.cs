@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections; // IMPORTANTE para corrutinas
 
 public class PenaltyRandomButtons : MonoBehaviour
 {
@@ -8,15 +9,20 @@ public class PenaltyRandomButtons : MonoBehaviour
     public TextMeshProUGUI resultText;
     public TextMeshProUGUI multiplierText;
     public GameObject exitButtonObject;
-    
+
     [Header("Apuesta")]
-    public int apuesta = 10;       
+    public int apuesta = 10;
     public int objetivoMultiplicador = 5;
 
     [Header("Botones")]
     public Button leftButton;
     public Button centerButton;
     public Button rightButton;
+
+    [Header("Sonido")]
+    public AudioSource buttonAudioSource;
+    public AudioClip clickSound;
+    public AudioClip failSound;
 
     private int badIndex;
     private int currentMultiplier = 1;
@@ -25,7 +31,7 @@ public class PenaltyRandomButtons : MonoBehaviour
 
     void Start()
     {
-        
+
         if (exitButtonObject != null)
             exitButtonObject.SetActive(false);
 
@@ -33,6 +39,16 @@ public class PenaltyRandomButtons : MonoBehaviour
         UpdateMultiplierText();
         SetupNewRound();
         canShoot = true;
+
+        // CONECTAR SONIDO A LOS BOTONES
+        if (leftButton != null)
+            leftButton.onClick.AddListener(() => { Debug.Log("LEFT CLICK"); PlayClickSound(); });
+
+        if (centerButton != null)
+            centerButton.onClick.AddListener(() => { Debug.Log("CENTER CLICK"); PlayClickSound(); });
+
+        if (rightButton != null)
+            rightButton.onClick.AddListener(() => { Debug.Log("RIGHT CLICK"); PlayClickSound(); });
     }
 
     void SetupNewRound()
@@ -40,6 +56,20 @@ public class PenaltyRandomButtons : MonoBehaviour
         badIndex = Random.Range(0, 3);
         if (resultText != null)
             resultText.text = "";
+    }
+
+    void PlayClickSound()
+    {
+        Debug.Log("PlayClickSound");
+
+        if (buttonAudioSource != null && clickSound != null)
+        {
+            buttonAudioSource.PlayOneShot(clickSound);
+        }
+        else
+        {
+            Debug.LogWarning("Falta buttonAudioSource o clickSound en el Inspector");
+        }
     }
 
     public void OnLeftButton() { TryShoot(0); }
@@ -57,7 +87,13 @@ public class PenaltyRandomButtons : MonoBehaviour
             // FALLO -> pierdes apuesta
             if (resultText != null)
                 resultText.text = "YOU FAIL";
-            
+
+            // SONIDO FAIL
+            if (buttonAudioSource != null && failSound != null)
+            {
+                buttonAudioSource.PlayOneShot(failSound);
+            }
+
             currentMultiplier = 1;
             UpdateMultiplierText();
 
@@ -68,22 +104,33 @@ public class PenaltyRandomButtons : MonoBehaviour
         {
             // GOL
             if (resultText != null)
-                resultText.text = "GOAL";
+                resultText.text = "YOU WON";
 
             currentMultiplier++;
             UpdateMultiplierText();
 
-            // �ha llegado al objetivo?
+            // ¿ha llegado al objetivo?
             if (currentMultiplier >= objetivoMultiplicador)
             {
-                if (GameManager.Instance != null)
-                    GameManager.Instance.endMinigame(true);
+                if (!juegoTerminado)
+                {
+                    juegoTerminado = true;
+                    StartCoroutine(WaitAndWin(3f));  // ESPERA 3s Y LUEGO GANA
+                }
             }
             else
             {
                 SetupNewRound();
             }
         }
+    }
+
+    private IEnumerator WaitAndWin(float delay)
+    {
+        yield return new WaitForSeconds(delay); // aquí sí se puede usar yield [web:91][web:96]
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.endMinigame(true);
     }
 
     void UpdateMultiplierText()
