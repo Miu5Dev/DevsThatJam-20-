@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
             {
                 _lobbyController.DisplayTitle("<color=yellow>You Won the demo!","thanks for playing!\n<color=red>Endless mode Started");
             }
-            else if(currentRound == rounds && coins < coinsRequired)
+            else if(currentRound == rounds && coins < coinsRequired || coins == 0)
             {
                 _lobbyController.displayGameOver();
             }
