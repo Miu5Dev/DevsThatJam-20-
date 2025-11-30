@@ -15,15 +15,15 @@ public class GameManager : MonoBehaviour
 
     
     [Header("Player Economy")]
-    [SerializeField] private int coins = 100;
+    [SerializeField] public int coins = 100;
 
     [Header("Minigame Settings")]
-    [SerializeField] private int coinsRequired;
-    [SerializeField] private int rounds;
+    [SerializeField] public int coinsRequired;
+    [SerializeField] public int rounds;
     [SerializeField] public int minigameMuliplier;
 
     [Header("Current Values")]
-    [SerializeField] private int currentRound;
+    [SerializeField] public int currentRound;
     
     
     [Header("Posible Minigames")]
@@ -93,15 +93,16 @@ public class GameManager : MonoBehaviour
 
     public void endMinigame(bool winned)
     {
+        
         if (!winned)
             onLose();   
         else
             onWin();
-    
+        
         // Iniciar coroutine para cargar escena y mostrar título después
         StartCoroutine(EndMinigameSequence(winned));
     }
-
+    
     private IEnumerator EndMinigameSequence(bool winned)
     {
         // Cargar la escena
@@ -116,7 +117,19 @@ public class GameManager : MonoBehaviour
         // Ahora sí, mostrar el título
         if (_lobbyController != null)
         {
-            _lobbyController.DisplayTitle(winned);
+            if (currentRound == rounds && coins >= coinsRequired)
+            {
+                _lobbyController.DisplayTitle("<color=yellow>You Won the demo!","thanks for playing!\n<color=red>Endless mode Started");
+            }
+            else if(currentRound == rounds && coins < coinsRequired)
+            {
+                _lobbyController.displayGameOver();
+            }
+            else
+            {
+                _lobbyController.DisplayTitle(winned);
+                currentRound++;
+            }
         }
         else
         {

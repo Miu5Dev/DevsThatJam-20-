@@ -136,7 +136,13 @@ public class BlackjackManager : MonoBehaviour
 
     void SpawnCardUI(Transform parent, int cardIndex)
     {
-        GameObject cardGO = Instantiate(cardPrefab, parent);
+        GameObject cardGO = Instantiate(cardPrefab);
+        cardGO.transform.SetParent(parent, false); // false mantiene escala local
+    
+        // Asegurar tamaño constante (por si acaso)
+        RectTransform rect = cardGO.GetComponent<RectTransform>();
+        rect.localScale = Vector3.one;
+    
         Image img = cardGO.GetComponent<Image>();
         if (img != null && cardSprites != null && cardIndex >= 0 && cardIndex < cardSprites.Length)
         {
