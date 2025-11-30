@@ -9,9 +9,15 @@ public class LobbyController : MonoBehaviour
     [SerializeField] private GameObject titleHolder;
     [SerializeField] private TMP_Text titleTitle;
     [SerializeField] private TMP_Text titleSubtitle;
+
+
+    [SerializeField] private GameObject gameoverpanel;
     
     [Header("Player Stats")]
     [SerializeField] private TMP_Text money;
+    [SerializeField] private TMP_Text roundStatus;
+    [SerializeField] private TMP_Text requiredMoney;
+    
     
     private int cachedMoney = -1;
     [SerializeField] private Canvas mainCanvas;
@@ -121,6 +127,8 @@ public class LobbyController : MonoBehaviour
     private void Update()
     {
         UpdateMoneyDisplay();
+        UpdateRequiredMoney();
+        UpdateCurrentRound();
     }
 
     private void UpdateMoneyDisplay()
@@ -134,6 +142,32 @@ public class LobbyController : MonoBehaviour
             money.text = currentMoney.ToString();
         }
     }
+    
+    private void UpdateRequiredMoney()
+    {
+        if (requiredMoney == null) return;
+        
+        int currentMoney = GameManager.Instance.coinsRequired;
+        
+        if ($"Money to win:\n{currentMoney.ToString()}" != requiredMoney.text)
+        {
+            requiredMoney.text = $"Money to win:\n{currentMoney.ToString()}";
+        }
+    }
+    
+       private void UpdateCurrentRound()
+        {
+            if (roundStatus == null) return;
+            
+            int roundsrequired = GameManager.Instance.rounds;
+            int currentRound = GameManager.Instance.currentRound;
+            
+            if ($"Round {currentRound} / {roundsrequired}" != roundStatus.text)
+            {
+                roundStatus.text = $"Round {currentRound} / {roundsrequired}";
+            }
+        }
+    
 
     public void DisplayTitle(bool winned)
     {
@@ -169,6 +203,43 @@ public class LobbyController : MonoBehaviour
         // Guardar la referencia a la nueva coroutine
         activeAnimationCoroutine = StartCoroutine(FadeInOutText(titleTitle, titleSubtitle));
     }
+    
+    
+    public void DisplayTitle(string title, string subtitle)
+    {
+        // Validar referencias antes de usar
+        ValidateReferences();
+        
+        if (titleHolder == null || titleTitle == null || titleSubtitle == null)
+        {
+            Debug.LogError("LobbyController: Referencias de título no disponibles!");
+            return;
+        }
+        
+        // Detener la animación anterior si existe
+        if (activeAnimationCoroutine != null)
+        {
+            StopCoroutine(activeAnimationCoroutine);
+            activeAnimationCoroutine = null;
+        }
+        
+
+            titleTitle.text = title;
+            titleSubtitle.text = subtitle;
+
+
+        
+        titleHolder.SetActive(true);
+        
+        // Guardar la referencia a la nueva coroutine
+        activeAnimationCoroutine = StartCoroutine(FadeInOutText(titleTitle, titleSubtitle));
+    }
+
+    public void displayGameOver()
+    {
+        gameoverpanel.SetActive(true);
+    }
+    
 
     private IEnumerator FadeInOutText(TMP_Text title, TMP_Text subtitle)
     {
